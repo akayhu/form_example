@@ -20,6 +20,9 @@ body {
 label {
   margin-left: 33px !important;
 }
+input {
+  margin-bottom: 10px !important;
+}
 .submit {
   text-decoration: none;
   color: #fff;
@@ -43,4 +46,10 @@ label {
 }
 .submit:hover {
   background-color: #2bbbad;
+}
+.error_message {
+  color: red;
+  font-size: 12px;
+  margin-left: 45px;
+  margin-bottom: 20px;
 }
