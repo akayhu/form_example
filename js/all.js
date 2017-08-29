@@ -4,6 +4,9 @@ $(function(){
 
   formObj = ( function($) {
 
+    // 把 $ 傳入當參數，因為先導入了 jQuery 的 lib，所以 $ 就等於 jQuery 這個 javascript 的物件，
+    // 利用 js 物件的特性，在 $ 上加入想要的東西，就變成自訂 jQuery plugin
+
     $constructor = {
       username: false,
       email: false,
@@ -38,20 +41,20 @@ $(function(){
       error_re_password2: "✕ 與密碼不一致，請重新輸入"
     };
 
-    submit = function(){
+    var submit = function(){
       var data = {
         username: $inputName.username.val(),
         email: $inputName.email.val(),
         password: $inputName.password.val()
       };
       console.log( '送出', data );
-    },
+    };
 
-    showError = function( showTag, showMessage ){
+    var showError = function( showTag, showMessage ){
       showTag.html( showMessage );
-    },
+    };
 
-    hideError = function( hideTag ){
+    var hideError = function( hideTag ){
       hideTag.html('');
     };
 
