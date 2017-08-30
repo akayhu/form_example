@@ -34,7 +34,7 @@ $(function(){
 					error_re_password2: "✕ 與密碼不一致，請重新輸入"
 				};
 
-		var submit = function(){
+		var _submit = function(){
 					var data = {
 						username: $inputName.username.val(),
 						email: $inputName.email.val(),
@@ -43,15 +43,15 @@ $(function(){
 					console.log( '送出', data );
 				},
 
-				showError = function( showTag, showMessage ){
+				_showError = function( showTag, showMessage ){
 					showTag.html( showMessage );
 				},
 
-				hideError = function( hideTag ){
+				_hideError = function( hideTag ){
 					hideTag.html('');
 				},
 
-				DOMOperating = function(){
+				_DOMOperating = function(){
 
 					button.submit.click( function() {
 
@@ -59,37 +59,37 @@ $(function(){
 
 						// username
 						if( !inputName.username.val() ){
-							showError( errorDiv.username, errorMessage.error_username );
+							_showError( errorDiv.username, errorMessage.error_username );
 						} else {
-							hideError( errorDiv.username );
+							_hideError( errorDiv.username );
 							constructor.username = true;
 						}
 						
 						// email
 						if( !inputName.email.val() ) {
-							showError( errorDiv.email, errorMessage.error_email1 );
+							_showError( errorDiv.email, errorMessage.error_email1 );
 						} else if( !reg.test( inputName.email.val() ) ) {
-							showError( errorDiv.email, errorMessage.error_email2 );
+							_showError( errorDiv.email, errorMessage.error_email2 );
 						} else {
-							hideError( errorDiv.email );
+							_hideError( errorDiv.email );
 							constructor.email = true;
 						}
 
 						// password
 						if( !inputName.password.val() ){
-							showError( errorDiv.password, errorMessage.error_password );
+							_showError( errorDiv.password, errorMessage.error_password );
 						} else {
-							hideError( errorDiv.password );
+							_hideError( errorDiv.password );
 							constructor.password = true;
 						}
 
 						// re_password
 						if( !inputName.re_password.val() ) {
-							showError( errorDiv.re_password, errorMessage.error_re_password1 );
+							_showError( errorDiv.re_password, errorMessage.error_re_password1 );
 						} else if( inputName.password.val() !== inputName.re_password.val() ) {
-							showError( errorDiv.re_password, errorMessage.error_re_password2 );
+							_showError( errorDiv.re_password, errorMessage.error_re_password2 );
 						} else {
-							hideError( errorDiv.re_password );
+							_hideError( errorDiv.re_password );
 							constructor.re_password = true;
 						}
 
@@ -104,12 +104,14 @@ $(function(){
 
 		return {
 
-			DOMOperating: DOMOperating
+			init: function(){
+				_DOMOperating();
+			}
 
-		}
+		};
 
 	})();
 
-	formObj.DOMOperating();
+	formObj.init();
 
 });
