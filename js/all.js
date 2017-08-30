@@ -1,120 +1,115 @@
 $(function(){
 
-  var formObj = formObj || {};
+	var formObj = formObj || {};
 
-  formObj = ( function($) {
+	formObj = ( function() {
 
-    // 把 $ 傳入當參數，因為先導入了 jQuery 的 lib，所以 $ 就等於 jQuery 這個 javascript 的物件，
-    // 利用 js 物件的特性，在 $ 上加入想要的東西，就變成自訂 jQuery plugin
+		var constructor = {
+					username: false,
+					email: false,
+					password: false,
+					re_password: false
+				},
+				inputName = {
+					username: $("#username"),
+					email: $("#email"),
+					password: $("#password"),
+					re_password: $("#re_password")
+				},
+				errorDiv = {
+					username: $("#error_message_username"),
+					email: $("#error_message_email"),
+					password: $("#error_message_password"),
+					re_password: $("#error_message_re_password")
+				},
+				button = {
+					submit: $(".submit")
+				},
+				errorMessage = {
+					error_username: "✕ 請輸入姓名",
+					error_email1: "✕ 請輸入Email",
+					error_email2: "✕ Email格式錯誤",
+					error_password: "✕ 請輸入密碼",
+					error_re_password1: "✕ 請輸入再次確認密碼",
+					error_re_password2: "✕ 與密碼不一致，請重新輸入"
+				};
 
-    $constructor = {
-      username: false,
-      email: false,
-      password: false,
-      re_password: false
-    };
+		var submit = function(){
+					var data = {
+						username: $inputName.username.val(),
+						email: $inputName.email.val(),
+						password: $inputName.password.val()
+					};
+					console.log( '送出', data );
+				},
 
-    $inputName = {
-      username: $("#username"),
-      email: $("#email"),
-      password: $("#password"),
-      re_password: $("#re_password")
-    };
+				showError = function( showTag, showMessage ){
+					showTag.html( showMessage );
+				},
 
-    $errorDiv = {
-      username: $("#error_message_username"),
-      email: $("#error_message_email"),
-      password: $("#error_message_password"),
-      re_password: $("#error_message_re_password")
-    };
+				hideError = function( hideTag ){
+					hideTag.html('');
+				},
 
-    $button = {
-      submit: $(".submit")
-    };
+				DOMOperating = function(){
 
-    $errorMessage = {
-      error_username: "✕ 請輸入姓名",
-      error_email1: "✕ 請輸入Email",
-      error_email2: "✕ Email格式錯誤",
-      error_password: "✕ 請輸入密碼",
-      error_re_password1: "✕ 請輸入再次確認密碼",
-      error_re_password2: "✕ 與密碼不一致，請重新輸入"
-    };
+					button.submit.click( function() {
 
-    var submit = function(){
-      var data = {
-        username: $inputName.username.val(),
-        email: $inputName.email.val(),
-        password: $inputName.password.val()
-      };
-      console.log( '送出', data );
-    };
+						var reg = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-    var showError = function( showTag, showMessage ){
-      showTag.html( showMessage );
-    };
+						// username
+						if( !inputName.username.val() ){
+							showError( errorDiv.username, errorMessage.error_username );
+						} else {
+							hideError( errorDiv.username );
+							constructor.username = true;
+						}
+						
+						// email
+						if( !inputName.email.val() ) {
+							showError( errorDiv.email, errorMessage.error_email1 );
+						} else if( !reg.test( inputName.email.val() ) ) {
+							showError( errorDiv.email, errorMessage.error_email2 );
+						} else {
+							hideError( errorDiv.email );
+							constructor.email = true;
+						}
 
-    var hideError = function( hideTag ){
-      hideTag.html('');
-    };
+						// password
+						if( !inputName.password.val() ){
+							showError( errorDiv.password, errorMessage.error_password );
+						} else {
+							hideError( errorDiv.password );
+							constructor.password = true;
+						}
 
-    return {
+						// re_password
+						if( !inputName.re_password.val() ) {
+							showError( errorDiv.re_password, errorMessage.error_re_password1 );
+						} else if( inputName.password.val() !== inputName.re_password.val() ) {
+							showError( errorDiv.re_password, errorMessage.error_re_password2 );
+						} else {
+							hideError( errorDiv.re_password );
+							constructor.re_password = true;
+						}
 
-      init: function(){
+						console.log( 'constructor', constructor );
+						if( constructor.username && constructor.email && constructor.password && constructor.re_password ) {
+							submit();
+						}
 
-        $button.submit.click( function() {
+					});
 
-          var reg = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				};
 
-          // username
-          if( !$inputName.username.val() ){
-            showError( $errorDiv.username, $errorMessage.error_username );
-          } else {
-            hideError( $errorDiv.username );
-            $constructor.username = true;
-          }
-          
-          // email
-          if( !$inputName.email.val() ) {
-            showError( $errorDiv.email, $errorMessage.error_email1 );
-          } else if( !reg.test( $inputName.email.val() ) ) {
-            showError( $errorDiv.email, $errorMessage.error_email2 );
-          } else {
-            hideError( $errorDiv.email );
-            $constructor.email = true;
-          }
+		return {
 
-          // password
-          if( !$inputName.password.val() ){
-            showError( $errorDiv.password, $errorMessage.error_password );
-          } else {
-            hideError( $errorDiv.password );
-            $constructor.password = true;
-          }
+			DOMOperating: DOMOperating
 
-          // re_password
-          if( !$inputName.re_password.val() ) {
-            showError( $errorDiv.re_password, $errorMessage.error_re_password1 );
-          } else if( $inputName.password.val() !== $inputName.re_password.val() ) {
-            showError( $errorDiv.re_password, $errorMessage.error_re_password2 );
-          } else {
-            hideError( $errorDiv.re_password );
-            $constructor.re_password = true;
-          }
+		}
 
-          console.log( '$constructor', $constructor );
-          if( $constructor.username && $constructor.email &&  $constructor.password && $constructor.re_password ) {
-            submit();
-          }
+	})();
 
-        });
-
-      }
-
-    }
-
-  })(jQuery);
-
-  formObj.init();
+	formObj.DOMOperating();
 
 });
