@@ -70,7 +70,7 @@ formObj = (function(){
         // email
         if( !dataObj.emailVal ) {
             _showError( errorDiv.email, errorMessage.error_email1 );
-        } else if( !reg.test( emailVal ) ) {
+        } else if( !reg.test( dataObj.emailVal ) ) {
             _showError( errorDiv.email, errorMessage.error_email2 );
         } else {
             _hideError( errorDiv.email );
